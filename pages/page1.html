@@ -14,60 +14,61 @@
         </div>
     </header>
     
-    <div class="image-wrapper">
-        <img src="../images/0014.jpg" alt="Sub page visual" class="zoomable-image">
-    </div>
+    <div class="sub-page-container">
 
-    <div class="content-wrapper">
-        <h2>Sub Page Title</h2>
-        <p>Your description goes here...</p>
-        
-        <button class="zoom-btn">🔍 Zoom Image</button>
-    </div>
-
-</div>
-
-        <div class="pane text-pane">
-            <div class="metadata">
-                <strong>Source XML:</strong> transcription_0014.xml<br>
-                <strong>Original File:</strong> 0014.jpg
-            </div>
-            <div class="transcription-content">
-Nomina Illustrium
-Qui Bibliothecam Regio⸗Electoralem
-Dresdensem inviserunt.
-
-Marquis de Sylva Sereniss. Lusitaniæ Regis ad
-Aulam Neapolitanam Legatus.
-Fridericus Moszynski Comt (sig) 1. Jul 1753.
-Gundaccarus Comes de Sternberg. 3. Jul. 1753.
-Adolphus Erasmus a Gersdorff. d. 3. Jul: 1753.
-Johann Friedrich Ernst von Braue 27. Jul. 1753.
-Dñ Francisco d’Echavarria capitan al
-Servicio d’espeña —
-Stephanus de Halmágy Hungarus ex Tramia d. 13a Julÿ. 1753.
-Dñ Jph Manes. Capitan al servicio d’España —
-Henri Maurice de Berlepsch. z 3 Julli 1753.
-Poniatowicz Colonel dans l’Armée de Pologne.
-Johann Ernst von Zweÿdorff Königl: Page den 30 Jul: 1753
-Francisc[us] Borouski Præposit. Cracp.
-Philippe Bourekhard de Leger Capitain le 3. Aout. 1753.
-Louis de Bachelu Lieutenant Colonel „ „ „ „
-Jean Baptiste Burekhard de Leger Capitain
-L’abé de Leger Bachelier de Sorbone. le 3. Aout 1753.
-Dñ Philipe de Larrea dela Province de Bizcaye, en Espagne d. 6. A.
-Christophorꝰ Guilielmꝰ de Waldstromer. Noribergensis.
-Paulus de Stetter. Augustanus
-J. Martin Walter Major Jng: den 10ten Augst. 1753.
-Pierre michel hennin Secretaire attaché a l’ambassade de france en Pologne 1753
-Wolf Christian v. Schönberg Kriegs Rath. d. 11 Augst 1753.
-Johannes Ernestus Gottlieb Koch. Syndicꝰ Stolberg:
-d. 11t Augst 1753
-Johannes Jacobus Spörl ex Norimberga d. 15. Augt 1753
-            </div>
+        <div class="image-wrapper">
+            <img src="../images/0014.jpg" alt="Sub page visual" class="zoomable-image">
         </div>
-    </div>
-<script>
+
+        <div class="content-wrapper">
+            
+            <div class="header-section">
+                <h2>Sub Page Title</h2>
+                <p>Your description goes here...</p>
+                <button class="zoom-btn">🔍 Zoom Image</button>
+            </div>
+
+            <hr> <div class="pane text-pane">
+                <div class="metadata">
+                    <strong>Source XML:</strong> transcription_0014.xml<br>
+                    <strong>Original File:</strong> 0014.jpg
+                </div>
+                
+                <div class="transcription-content">
+                    <p>Nomina Illustrium<br>
+                    Qui Bibliothecam Regio⸗Electoralem<br>
+                    Dresdensem inviserunt.</p>
+
+                    <p>Marquis de Sylva Sereniss. Lusitaniæ Regis ad<br>
+                    Aulam Neapolitanam Legatus.<br>
+                    Fridericus Moszynski Comt (sig) 1. Jul 1753.<br>
+                    Gundaccarus Comes de Sternberg. 3. Jul. 1753.<br>
+                    Adolphus Erasmus a Gersdorff. d. 3. Jul: 1753.<br>
+                    Johann Friedrich Ernst von Braue 27. Jul. 1753.<br>
+                    Dñ Francisco d’Echavarria capitan al<br>
+                    Servicio d’espeña —<br>
+                    Stephanus de Halmágy Hungarus ex Tramia d. 13a Julÿ. 1753.<br>
+                    Dñ Jph Manes. Capitan al servicio d’España —<br>
+                    Henri Maurice de Berlepsch. z 3 Julli 1753.<br>
+                    Poniatowicz Colonel dans l’Armée de Pologne.<br>
+                    Johann Ernst von Zweÿdorff Königl: Page den 30 Jul: 1753<br>
+                    Francisc[us] Borouski Præposit. Cracp.<br>
+                    Philippe Bourekhard de Leger Capitain le 3. Aout. 1753.<br>
+                    Louis de Bachelu Lieutenant Colonel „ „ „ „<br>
+                    Jean Baptiste Burekhard de Leger Capitain<br>
+                    L’abé de Leger Bachelier de Sorbone. le 3. Aout 1753.<br>
+                    Dñ Philipe de Larrea dela Province de Bizcaye, en Espagne d. 6. A.<br>
+                    Christophorꝰ Guilielmꝰ de Waldstromer. Noribergensis.<br>
+                    Paulus de Stetter. Augustanus<br>
+                    J. Martin Walter Major Jng: den 10ten Augst. 1753.<br>
+                    Pierre michel hennin Secretaire attaché a l’ambassade de france en Pologne 1753<br>
+                    Wolf Christian v. Schönberg Kriegs Rath. d. 11 Augst 1753.<br>
+                    Johannes Ernestus Gottlieb Koch. Syndicꝰ Stolberg:<br>
+                    d. 11t Augst 1753<br>
+                    Johannes Jacobus Spörl ex Norimberga d. 15. Augt 1753</p>
+                </div>
+            </div>
+        </div> </div> <script>
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Select all zoom buttons
     const zoomButtons = document.querySelectorAll('.zoom-btn');
@@ -76,17 +77,18 @@ document.addEventListener('DOMContentLoaded', () => {
     zoomButtons.forEach(button => {
         button.addEventListener('click', function() {
             
-            // Find the parent container of the clicked button
-            const parentContainer = this.closest('.sub-page-container');
+            // This now works because we added class="sub-page-container" in the HTML
+            const parentContainer = this.closest('.sub-page-container'); 
             
-            // Find the image INSIDE that specific container
+            if (!parentContainer) {
+                console.error("Could not find parent container!");
+                return;
+            }
+
             const image = parentContainer.querySelector('.zoomable-image');
             
-            // Toggle the zoom class
             if (image) {
                 image.classList.toggle('is-zoomed');
-                
-                // Update button text based on state
                 if (image.classList.contains('is-zoomed')) {
                     this.textContent = "Close Zoom";
                 } else {
@@ -96,15 +98,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Optional: Click the image itself to close it
     const images = document.querySelectorAll('.zoomable-image');
     images.forEach(img => {
         img.addEventListener('click', function() {
             this.classList.remove('is-zoomed');
-            // Reset the button text finding the sibling button
             const parent = this.closest('.sub-page-container');
-            const btn = parent.querySelector('.zoom-btn');
-            if(btn) btn.textContent = "🔍 Zoom Image";
+            if (parent) {
+                const btn = parent.querySelector('.zoom-btn');
+                if(btn) btn.textContent = "🔍 Zoom Image";
+            }
         });
     });
 });
