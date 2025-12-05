@@ -75,10 +75,6 @@ header h1 {
     padding-bottom: 0.5rem;
 }
 
-.transcription-content {
-    white-space: pre-wrap; /* Preserves line breaks and spacing from XML */
-}
-
 /* Landing Page Styling */
 .landing-container {
     max-width: 800px;
@@ -117,14 +113,21 @@ header h1 {
     cursor: pointer; /* Indicates it interacts */
     position: relative;
     z-index: 1;
+    width: 100%;        /* Forces image to fit the container width */
+    height: auto;       /* Maintains the aspect ratio */
+    display: block;     /* Removes tiny gap below image */
+    transform-origin: top left; /* Ensures it zooms out towards the content, not off-screen */
 }
 
 /* The class added by JavaScript to trigger the zoom */
 .zoomable-image.is-zoomed {
-    transform: scale(2.0); /* Adjusts how much it zooms (2x) */
-    z-index: 1000;         /* Ensures it sits on top of text/nav */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Adds depth */
-    cursor: zoom-out;
+    /* Scale needs to be larger now that the starting image is smaller */
+    transform: scale(2.5); 
+    
+    /* Add a shadow so it pops off the page */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+    
+    z-index: 1000;
 }
 
 /* Optional: Style the button */
