@@ -140,3 +140,16 @@ header h1 {
 .zoom-btn:hover {
     background-color: #0056b3;
 }
+.sub-page-container {
+    display: flex; /* Puts image and text side-by-side */
+    gap: 20px;     /* Space between image and text */
+    padding: 20px;
+}
+
+.image-wrapper {
+    flex: 1;       /* Takes up left side */
+}
+
+.content-wrapper {
+    flex: 1;       /* Takes up right side */
+}
