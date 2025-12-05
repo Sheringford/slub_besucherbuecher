@@ -14,7 +14,7 @@
             text-align: left;
         }
 
-        /* Styles for the new navigation elements */
+        /* Navigation Styles */
         #page-navigator {
             padding: 5px;
             border-radius: 4px;
@@ -25,7 +25,7 @@
             cursor: pointer;
         }
 
-        /* UX: Change cursor to show image is clickable */
+        /* Cursor Styles */
         .zoomable-image {
             cursor: zoom-in;
         }
@@ -40,7 +40,6 @@
             <a href="../index.html">&larr; Index</a>
             
             <span id="page-indicator">Loading...</span>
-            
             <select id="page-navigator">
                 <option>Loading pages...</option>
             </select>
@@ -51,7 +50,7 @@
     
     <div class="sub-page-container">
         <div class="header-section">
-            <h2>Sub Page Title</h2>
+            <h2>Page 1</h2>
             <small style="color: #666;">(Click image to zoom)</small>
         </div>
 
@@ -60,7 +59,6 @@
         </div>
 
         <div class="content-wrapper">
-            
             <hr> 
             <div class="pane text-pane">
                 <div class="metadata">
@@ -105,84 +103,58 @@
         </div> 
     </div> 
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONFIGURATION ---
+        const GITHUB_USERNAME = 'Sheringford'; 
+        const GITHUB_REPO = 'slub_besucherbuecher';     
+        const FOLDER_PATH = 'pages';             
+        
+        // Settings for THIS specific page
+        const CURRENT_PAGE = 1; 
+        // ---------------------
 
-    // --- CONFIGURATION ---
-    const GITHUB_USERNAME = 'Sheringford'; 
-    const GITHUB_REPO = 'slub_besucherbuecher';     
-    const FOLDER_PATH = 'pages';             
-    
-    // Fallback settings
-    let totalPages = 5; 
-    const CURRENT_PAGE = 1; // Corrected to 1 for this file
-    // ---------------------
+        let totalPages = 5; // Fallback
 
-    const indicator = document.getElementById('page-indicator');
-    const select = document.getElementById('page-navigator');
+        const indicator = document.getElementById('page-indicator');
+        const select = document.getElementById('page-navigator');
 
-    // Function to update the UI
-    function updateNavigation(count) {
-        // 1. Update text
-        if (indicator) {
-            indicator.textContent = `Page ${CURRENT_PAGE} of ${count}`;
-        }
-
-        // 2. Update Dropdown
-        if (select) {
-            select.innerHTML = ''; // Clear existing options
-            for (let i = 1; i <= count; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = `Go to Page ${i}`;
-                if (i === CURRENT_PAGE) option.selected = true;
-                select.appendChild(option);
+        function updateNavigation(count) {
+            if (indicator) indicator.textContent = `Page ${CURRENT_PAGE} of ${count}`;
+            if (select) {
+                select.innerHTML = '';
+                for (let i = 1; i <= count; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `Go to Page ${i}`;
+                    if (i === CURRENT_PAGE) option.selected = true;
+                    select.appendChild(option);
+                }
             }
         }
-    }
 
-    // Initial load with fallback number
-    updateNavigation(totalPages);
+        // Initial load
+        updateNavigation(totalPages);
 
-    // 3. FETCH REAL COUNT FROM GITHUB
-    const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${FOLDER_PATH}`;
+        // Fetch from GitHub
+        const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${FOLDER_PATH}`;
 
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) throw new Error('API limit or Repo not found');
-            return response.json();
-        })
-        .then(data => {
-            // Filter only HTML files starting with 'page'
-            const pageFiles = data.filter(file => 
-                file.name.endsWith('.html') && file.name.startsWith('page')
-            );
-            
-            totalPages = pageFiles.length;
-            console.log(`Found ${totalPages} pages via GitHub API`);
-            
-            // Re-render the UI with the accurate count
-            updateNavigation(totalPages);
-        })
-        .catch(error => {
-            console.warn('Could not fetch page count from GitHub (using fallback):', error);
-        });
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) throw new Error('API limit or Repo not found');
+                return response.json();
+            })
+            .then(data => {
+                const pageFiles = data.filter(file => 
+                    file.name.endsWith('.html') && file.name.startsWith('page')
+                );
+                totalPages = pageFiles.length;
+                updateNavigation(totalPages);
+            })
+            .catch(error => console.warn('GitHub API Error:', error));
 
-    // 4. Setup Dropdown Event Listener
-    if (select) {
-        select.addEventListener('change', (e) => {
-            window.location.href = `page${e.target.value}.html`;
-        });
-    }
-
-    // 5. Setup Click-to-Zoom
-    const images = document.querySelectorAll('.zoomable-image');
-    images.forEach(img => {
-        img.addEventListener('click', function() {
-            this.classList.toggle('is-zoomed');
-        });
-    });
-});
-</script>
-</body>
-</html>
+        // Dropdown Event
+        if (select) {
+            select.addEventListener('change', (e) => {
+                window.location.href = `page${e.target.value}.html`;
+            });
