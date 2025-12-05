@@ -49,7 +49,6 @@
     </header>
     
     <div class="sub-page-container">
-
         <div class="image-wrapper">
             <img src="../images/0014.jpg" alt="Sub page visual" class="zoomable-image" title="Click to Zoom">
         </div>
@@ -154,3 +153,16 @@
             select.addEventListener('change', (e) => {
                 window.location.href = `page${e.target.value}.html`;
             });
+        }
+
+        // Zoom Event
+        const images = document.querySelectorAll('.zoomable-image');
+        images.forEach(img => {
+            img.addEventListener('click', function() {
+                this.classList.toggle('is-zoomed');
+            });
+        });
+    });
+    </script>
+</body>
+</html>
