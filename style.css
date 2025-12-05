@@ -59,14 +59,6 @@ header h1 {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* Text Pane Styling */
-.text-pane {
-    background-color: #fff;
-    color: #333;
-    font-family: 'Georgia', serif; /* Serif looks better for transcripts */
-    line-height: 1.6;
-}
-
 .metadata {
     font-size: 0.8rem;
     color: #666;
@@ -155,4 +147,15 @@ header h1 {
 
 .content-wrapper {
     flex: 1;       /* Takes up right side */
+}
+
+.text-pane {
+    background-color: #fff;
+    color: #333;
+    font-family: 'Georgia', serif; 
+    line-height: 1.6;
+}
+
+#transcription-text {
+    white-space: pre-wrap; 
 }
