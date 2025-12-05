@@ -1,115 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Page 1 - Nomina Illustrium</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-    <header>
-        <div>
-            <a href="../index.html">&larr; Back to Index</a>
-            <span>Page 1</span>
-            <a href="page2.html">Next Page &rarr;</a>
-        </div>
-    </header>
-    
-    <div class="sub-page-container">
-
-        <div class="image-wrapper">
-            <img src="../images/0014.jpg" alt="Sub page visual" class="zoomable-image">
-        </div>
-
-        <div class="content-wrapper">
-            
-            <div class="header-section">
-                <h2>Sub Page Title</h2>
-                <p>Your description goes here...</p>
-                <button class="zoom-btn">🔍 Zoom Image</button>
-            </div>
-
-            <hr> <div class="pane text-pane">
-                <div class="metadata">
-                    <strong>Source XML:</strong> transcription_0014.xml<br>
-                    <strong>Original File:</strong> 0014.jpg
-                </div>
-                
-                <div class="transcription-content">
-                    <p>Nomina Illustrium<br>
-                    Qui Bibliothecam Regio⸗Electoralem<br>
-                    Dresdensem inviserunt.</p>
-
-                    <p>Marquis de Sylva Sereniss. Lusitaniæ Regis ad<br>
-                    Aulam Neapolitanam Legatus.<br>
-                    Fridericus Moszynski Comt (sig) 1. Jul 1753.<br>
-                    Gundaccarus Comes de Sternberg. 3. Jul. 1753.<br>
-                    Adolphus Erasmus a Gersdorff. d. 3. Jul: 1753.<br>
-                    Johann Friedrich Ernst von Braue 27. Jul. 1753.<br>
-                    Dñ Francisco d’Echavarria capitan al<br>
-                    Servicio d’espeña —<br>
-                    Stephanus de Halmágy Hungarus ex Tramia d. 13a Julÿ. 1753.<br>
-                    Dñ Jph Manes. Capitan al servicio d’España —<br>
-                    Henri Maurice de Berlepsch. z 3 Julli 1753.<br>
-                    Poniatowicz Colonel dans l’Armée de Pologne.<br>
-                    Johann Ernst von Zweÿdorff Königl: Page den 30 Jul: 1753<br>
-                    Francisc[us] Borouski Præposit. Cracp.<br>
-                    Philippe Bourekhard de Leger Capitain le 3. Aout. 1753.<br>
-                    Louis de Bachelu Lieutenant Colonel „ „ „ „<br>
-                    Jean Baptiste Burekhard de Leger Capitain<br>
-                    L’abé de Leger Bachelier de Sorbone. le 3. Aout 1753.<br>
-                    Dñ Philipe de Larrea dela Province de Bizcaye, en Espagne d. 6. A.<br>
-                    Christophorꝰ Guilielmꝰ de Waldstromer. Noribergensis.<br>
-                    Paulus de Stetter. Augustanus<br>
-                    J. Martin Walter Major Jng: den 10ten Augst. 1753.<br>
-                    Pierre michel hennin Secretaire attaché a l’ambassade de france en Pologne 1753<br>
-                    Wolf Christian v. Schönberg Kriegs Rath. d. 11 Augst 1753.<br>
-                    Johannes Ernestus Gottlieb Koch. Syndicꝰ Stolberg:<br>
-                    d. 11t Augst 1753<br>
-                    Johannes Jacobus Spörl ex Norimberga d. 15. Augt 1753</p>
-                </div>
-            </div>
-        </div> </div> <script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Select all zoom buttons
-    const zoomButtons = document.querySelectorAll('.zoom-btn');
 
-    // 2. Add a click event to each button
-    zoomButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            
-            // This now works because we added class="sub-page-container" in the HTML
-            const parentContainer = this.closest('.sub-page-container'); 
-            
-            if (!parentContainer) {
-                console.error("Could not find parent container!");
-                return;
-            }
+    // --- CONFIGURATION ---
+    const GITHUB_USERNAME = 'Sheringford'; // e.g., 'john-doe'
+    const GITHUB_REPO = 'slub_besucherbuecher';     // e.g., 'transcription-project'
+    const FOLDER_PATH = 'pages';            // The folder where your HTML pages live
+    
+    // We set a fallback in case the API limit is hit
+    let totalPages = 5; 
+    const CURRENT_PAGE = 2; // CHANGE THIS per page
+    // ---------------------
 
-            const image = parentContainer.querySelector('.zoomable-image');
-            
-            if (image) {
-                image.classList.toggle('is-zoomed');
-                if (image.classList.contains('is-zoomed')) {
-                    this.textContent = "Close Zoom";
-                } else {
-                    this.textContent = "🔍 Zoom Image";
-                }
+    const indicator = document.getElementById('page-indicator');
+    const select = document.getElementById('page-navigator');
+
+    // Function to update the UI
+    function updateNavigation(count) {
+        // 1. Update text
+        if (indicator) {
+            indicator.textContent = `Page ${CURRENT_PAGE} of ${count}`;
+        }
+
+        // 2. Update Dropdown
+        if (select) {
+            select.innerHTML = ''; // Clear existing options
+            for (let i = 1; i <= count; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `Go to Page ${i}`;
+                if (i === CURRENT_PAGE) option.selected = true;
+                select.appendChild(option);
             }
+        }
+    }
+
+    // Initial load with fallback number
+    updateNavigation(totalPages);
+
+    // 3. FETCH REAL COUNT FROM GITHUB
+    const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${FOLDER_PATH}`;
+
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) throw new Error('API limit or Repo not found');
+            return response.json();
+        })
+        .then(data => {
+            // Filter the results to only count .html files that look like "pageX.html"
+            // This prevents counting random images or css files if they are in the folder
+            const pageFiles = data.filter(file => 
+                file.name.endsWith('.html') && file.name.startsWith('page')
+            );
+            
+            totalPages = pageFiles.length;
+            console.log(`Found ${totalPages} pages via GitHub API`);
+            
+            // Re-render the UI with the accurate count
+            updateNavigation(totalPages);
+        })
+        .catch(error => {
+            console.warn('Could not fetch page count from GitHub (using fallback):', error);
         });
-    });
 
+    // 4. Setup Dropdown Event Listener
+    if (select) {
+        select.addEventListener('change', (e) => {
+            window.location.href = `page${e.target.value}.html`;
+        });
+    }
+
+    // 5. Setup Click-to-Zoom
     const images = document.querySelectorAll('.zoomable-image');
     images.forEach(img => {
         img.addEventListener('click', function() {
-            this.classList.remove('is-zoomed');
-            const parent = this.closest('.sub-page-container');
-            if (parent) {
-                const btn = parent.querySelector('.zoom-btn');
-                if(btn) btn.textContent = "🔍 Zoom Image";
-            }
+            this.classList.toggle('is-zoomed');
         });
     });
 });
 </script>
-</body>
-</html>
