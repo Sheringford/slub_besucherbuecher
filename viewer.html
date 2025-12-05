@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Archive Viewer</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS Fixes */
+        .transcription-content p {
+            text-indent: 0 !important;
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+            white-space: normal;
+            text-align: left;
+        }
+        /* Navigation Styles */
+        #page-navigator {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background: #444;
+            color: white;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        /* Cursor Styles */
+        .zoomable-image { cursor: zoom-in; }
+        .zoomable-image.is-zoomed { cursor: zoom-out; }
+        
+        /* Loading State */
+        .loading { opacity: 0.5; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <a href="index.html">&larr; Index</a>
+            
+            <span id="page-indicator">Loading...</span>
+            <select id="page-navigator"></select>
+
+            <button id="btn-prev" class="nav-btn">&larr; Prev</button>
+            <button id="btn-next" class="nav-btn">Next &rarr;</button>
+        </div>
+    </header>
+    
+    <div class="sub-page-container">
+        
+        <div class="image-wrapper">
+            <img id="main-image" src="" alt="Page Visual" class="zoomable-image" title="Click to Zoom">
+        </div>
+
+        <div class="content-wrapper">
+            <hr> 
+            <div class="pane text-pane">
+                <div class="metadata">
+                    <strong>Source XML:</strong> <span id="meta-xml"></span><br>
+                    <strong>Original File:</strong> <span id="meta-img"></span>
+                </div>
+                
+                <div id="transcription-text" class="transcription-content">
+                    <p>Loading content...</p>
+                </div>
+            </div>
+        </div> 
+    </div> 
+
+    <script src="config.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // 1. Get the 'page' parameter from the URL (e.g. viewer.html?id=page2)
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentPageId = urlParams.get('id') || projectPages[0].id; // Default to first page
+
+        // 2. Find the current page data in config.js
+        let currentIndex = projectPages.findIndex(p => p.id === currentPageId);
+        if (currentIndex === -1) currentIndex = 0; // Fallback if ID wrong
+        
+        const pageData = projectPages[currentIndex];
+
+        // 3. Update Header & Navigation
+        const indicator = document.getElementById('page-indicator');
+        const select = document.getElementById('page-navigator');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        indicator.textContent = `${pageData.title} (Page ${currentIndex + 1} of ${projectPages.length})`;
+
+        // Populate Dropdown
+        projectPages.forEach(page => {
+            const option = document.createElement('option');
+            option.value = page.id;
+            option.textContent = page.title;
+            if(page.id === pageData.id) option.selected = true;
+            select.appendChild(option);
+        });
+
+        // Handle Dropdown Change
+        select.addEventListener('change', (e) => {
+            window.location.search = `?id=${e.target.value}`;
+        });
+
+        // Handle Next/Prev Buttons
+        btnPrev.onclick = () => {
+            if(currentIndex > 0) {
+                window.location.search = `?id=${projectPages[currentIndex - 1].id}`;
+            }
+        };
+        btnNext.onclick = () => {
+            if(currentIndex < projectPages.length - 1) {
+                window.location.search = `?id=${projectPages[currentIndex + 1].id}`;
+            }
+        };
+
+        // Disable buttons if at start/end
+        if(currentIndex === 0) btnPrev.disabled = true;
+        if(currentIndex === projectPages.length - 1) btnNext.disabled = true;
+
+        // 4. Load the Image
+        const imgElement = document.getElementById('main-image');
+        const metaImg = document.getElementById('meta-img');
+        
+        // Assumes images are in an 'images' folder
+        imgElement.src = `images/${pageData.image}`; 
+        metaImg.textContent = pageData.image;
+
+        // 5. Load and Parse the XML
+        const metaXml = document.getElementById('meta-xml');
+        const textBox = document.getElementById('transcription-text');
+        
+        metaXml.textContent = pageData.xml;
+
+        // Assumes xmls are in an 'xml' folder
+        fetch(`xml/${pageData.xml}`)
+            .then(response => response.text())
+            .then(str => {
+                // Parse the XML
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(str, "text/xml");
+                
+                // Your XML puts content inside <text> <![CDATA[ ... ]]> </text>
+                // DOMParser handles CDATA automatically in most cases
+                const textContent = xmlDoc.getElementsByTagName("text")[0].textContent;
+                
+                // Insert into HTML
+                // Note: We use innerHTML because the XML contains HTML tags like <br> and <p>
+                textBox.innerHTML = textContent;
+            })
+            .catch(err => {
+                console.error("Error loading XML:", err);
+                textBox.innerHTML = "<p style='color:red'>Error loading transcription file.</p>";
+            });
+
+        // 6. Zoom Feature
+        imgElement.addEventListener('click', function() {
+            this.classList.toggle('is-zoomed');
+        });
+    });
+    </script>
+</body>
+</html>
