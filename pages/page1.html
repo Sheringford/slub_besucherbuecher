@@ -67,5 +67,47 @@ Johannes Jacobus Spörl ex Norimberga d. 15. Augt 1753
             </div>
         </div>
     </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Select all zoom buttons
+    const zoomButtons = document.querySelectorAll('.zoom-btn');
+
+    // 2. Add a click event to each button
+    zoomButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            
+            // Find the parent container of the clicked button
+            const parentContainer = this.closest('.sub-page-container');
+            
+            // Find the image INSIDE that specific container
+            const image = parentContainer.querySelector('.zoomable-image');
+            
+            // Toggle the zoom class
+            if (image) {
+                image.classList.toggle('is-zoomed');
+                
+                // Update button text based on state
+                if (image.classList.contains('is-zoomed')) {
+                    this.textContent = "Close Zoom";
+                } else {
+                    this.textContent = "🔍 Zoom Image";
+                }
+            }
+        });
+    });
+
+    // Optional: Click the image itself to close it
+    const images = document.querySelectorAll('.zoomable-image');
+    images.forEach(img => {
+        img.addEventListener('click', function() {
+            this.classList.remove('is-zoomed');
+            // Reset the button text finding the sibling button
+            const parent = this.closest('.sub-page-container');
+            const btn = parent.querySelector('.zoom-btn');
+            if(btn) btn.textContent = "🔍 Zoom Image";
+        });
+    });
+});
+</script>
 </body>
 </html>
