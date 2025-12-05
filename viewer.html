@@ -142,7 +142,7 @@
                 
                 // Your XML puts content inside <text> <![CDATA[ ... ]]> </text>
                 // DOMParser handles CDATA automatically in most cases
-                const textContent = xmlDoc.getElementsByTagName("text")[0].textContent;
+                const textContent = xmlDoc.getElementsByTagName("text")[0].textContent.trim();
                 
                 // Insert into HTML
                 // Note: We use innerHTML because the XML contains HTML tags like <br> and <p>
