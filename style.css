@@ -111,3 +111,32 @@ header h1 {
         height: 50vh; /* Split screen vertically on mobile */
     }
 }
+/* Ensure the image transitions smoothly */
+.zoomable-image {
+    transition: transform 0.3s ease, z-index 0s;
+    cursor: pointer; /* Indicates it interacts */
+    position: relative;
+    z-index: 1;
+}
+
+/* The class added by JavaScript to trigger the zoom */
+.zoomable-image.is-zoomed {
+    transform: scale(2.0); /* Adjusts how much it zooms (2x) */
+    z-index: 1000;         /* Ensures it sits on top of text/nav */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Adds depth */
+    cursor: zoom-out;
+}
+
+/* Optional: Style the button */
+.zoom-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.zoom-btn:hover {
+    background-color: #0056b3;
+}
