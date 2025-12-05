@@ -19,8 +19,10 @@
         <div class="project-card">
             <h3>Nomina Illustrium (1753-1754)</h3>
             <p>A visitor register containing names of illustrious figures who visited the Royal Electoral Library in Dresden.</p>
-            <p><strong>Pages available:</strong> 5</p>
-            <a href="pages/page1.html">Open Project &rarr;</a>
+            
+            <p><strong>Pages available:</strong> <span id="page-count">Loading...</span></p>
+            
+            <a href="viewer.html">Open Project &rarr;</a>
         </div>
 
         <div class="project-card">
@@ -29,6 +31,20 @@
             <span>Coming Soon</span>
         </div>
     </div>
+
+    <script src="config.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if projectPages exists (from config.js)
+            if (typeof projectPages !== 'undefined') {
+                const countElement = document.getElementById('page-count');
+                if (countElement) {
+                    countElement.textContent = projectPages.length;
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>
