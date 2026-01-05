@@ -59,6 +59,6 @@ const projectPages = [
         title: "Seite 10",
         image: "0023.jpg",
         xml: "transcription_0023.xml"
-    }
+    },
     // To add a new page, copy the block above, add a comma, and paste it here!
 ];
