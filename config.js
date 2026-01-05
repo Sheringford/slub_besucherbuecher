@@ -29,7 +29,7 @@ const projectPages = [
         title: "Seite 5",
         image: "0018.jpg",
         xml: "transcription_0018.xml"
-    }
+    },
         {
         id: "page6",              // Unique ID for the URL
         title: "Seite 6",          // Display title
