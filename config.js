@@ -30,5 +30,35 @@ const projectPages = [
         image: "0018.jpg",
         xml: "transcription_0018.xml"
     }
+        {
+        id: "page6",              // Unique ID for the URL
+        title: "Seite 6",          // Display title
+        image: "0019.jpg",        // Filename in images/ folder
+        xml: "transcription_0019.xml" // Filename in xml/ folder
+    },
+    {
+        id: "page7",
+        title: "Seite 7",
+        image: "0020.jpg",
+        xml: "transcription_0020.xml"
+    },
+    {
+        id: "page8",
+        title: "Seite 8",
+        image: "0021.jpg",
+        xml: "transcription_0021.xml"
+    },
+    {
+        id: "page9",
+        title: "Seite 9",
+        image: "0022.jpg",
+        xml: "transcription_0022.xml"
+    },
+    {
+        id: "page10",
+        title: "Seite 10",
+        image: "0023.jpg",
+        xml: "transcription_0023.xml"
+    }
     // To add a new page, copy the block above, add a comma, and paste it here!
 ];
