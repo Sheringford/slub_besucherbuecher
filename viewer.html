@@ -70,17 +70,38 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         
-        // 1. Get the 'page' parameter from the URL (e.g. viewer.html?id=page2)
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentPageId = urlParams.get('id') || projectPages[0].id; // Default to first page
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Get the project ID (default to 'nomina' if missing)
+    const currentProjectId = urlParams.get('project') || 'nomina';
+    
+    // Get the specific page ID
+    const currentPageId = urlParams.get('id');
 
-        // 2. Find the current page data in config.js
-        let currentIndex = projectPages.findIndex(p => p.id === currentPageId);
-        if (currentIndex === -1) currentIndex = 0; // Fallback if ID wrong
-        
-        const pageData = projectPages[currentIndex];
+    // 2. Select the correct list of pages from config.js
+    // We access the 'projects' object we created in Step 1
+    const projectPages = projects[currentProjectId];
 
-        // 3. Update Header & Navigation
+    // Safety check: if the project doesn't exist (typo in URL), alert or fallback
+    if (!projectPages) {
+        alert("Project not found!");
+        return;
+    }
+
+    // Find the current page index
+    let currentIndex = -1;
+    if (currentPageId) {
+        currentIndex = projectPages.findIndex(p => p.id === currentPageId);
+    }
+    
+    // Default to first page if ID is missing or wrong
+    if (currentIndex === -1) currentIndex = 0;
+    
+    const pageData = projectPages[currentIndex];
+
         const indicator = document.getElementById('page-indicator');
         const select = document.getElementById('page-navigator');
         const btnPrev = document.getElementById('btn-prev');
