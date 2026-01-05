@@ -1,5 +1,6 @@
 // config.js
-const projectPages = [
+const projects = {
+    "nomina": [
     {
         id: "page1",              // Unique ID for the URL
         title: "Seite 1",          // Display title
@@ -60,5 +61,37 @@ const projectPages = [
         image: "0023.jpg",
         xml: "transcription_0023.xml"
     },
-    // To add a new page, copy the block above, add a comma, and paste it here!
-];
+    ],
+    "year1776": [
+        {
+            id: "p1776_1",
+            title: "Seite 1",
+            image: "0053.jpg", 
+            xml: "transcription_0053.xml"
+        },
+        {
+            id: "p1776_2",
+            title: "Seite 2",
+            image: "0054.jpg", 
+            xml: "transcription_0054.xml"
+        },
+        {
+            id: "p1776_3",
+            title: "Seite 3",
+            image: "0055.jpg", 
+            xml: "transcription_0055.xml"
+        },
+        {
+            id: "p1776_4",
+            title: "Seite 4",
+            image: "0056.jpg", 
+            xml: "transcription_0056.xml"
+        },
+        {
+            id: "p1776_5",
+            title: "Seite 5",
+            image: "0057.jpg", 
+            xml: "transcription_0057.xml"
+        },
+    ]
+};
