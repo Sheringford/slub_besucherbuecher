@@ -65,120 +65,123 @@
         </div> 
     </div> 
 
-    <script src="config.js"></script>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        
+<script>
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Get URL parameters
+    // 1. GET URL PARAMETERS
     const urlParams = new URLSearchParams(window.location.search);
-    
-    // Get the project ID (default to 'nomina' if missing)
-    const currentProjectId = urlParams.get('project') || 'nomina';
-    
-    // Get the specific page ID
+    const currentProjectId = urlParams.get('project') || 'nomina'; // Default to nomina
     const currentPageId = urlParams.get('id');
 
-    // 2. Select the correct list of pages from config.js
-    // We access the 'projects' object we created in Step 1
+    // 2. SELECT CORRECT PROJECT
+    // Access the global 'projects' object from config.js
     const projectPages = projects[currentProjectId];
 
-    // Safety check: if the project doesn't exist (typo in URL), alert or fallback
+    // Safety check: if project doesn't exist
     if (!projectPages) {
-        alert("Project not found!");
+        document.body.innerHTML = "<h1>Error: Project not found. check URL.</h1>";
         return;
     }
 
-    // Find the current page index
+    // 3. FIND CURRENT PAGE INDEX
     let currentIndex = -1;
     if (currentPageId) {
         currentIndex = projectPages.findIndex(p => p.id === currentPageId);
     }
     
-    // Default to first page if ID is missing or wrong
+    // Default to first page if ID is missing or not found
     if (currentIndex === -1) currentIndex = 0;
     
     const pageData = projectPages[currentIndex];
 
-        const indicator = document.getElementById('page-indicator');
-        const select = document.getElementById('page-navigator');
-        const btnPrev = document.getElementById('btn-prev');
-        const btnNext = document.getElementById('btn-next');
+    // 4. UPDATE UI ELEMENTS
+    const indicator = document.getElementById('page-indicator');
+    const select = document.getElementById('page-navigator');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
 
-        indicator.textContent = `${pageData.title} (Seite ${currentIndex + 1} von ${projectPages.length})`;
+    // Update Header Text
+    indicator.textContent = `${pageData.title} (Seite ${currentIndex + 1} von ${projectPages.length})`;
 
-        // Populate Dropdown
-        projectPages.forEach(page => {
-            const option = document.createElement('option');
-            option.value = page.id;
-            option.textContent = page.title;
-            if(page.id === pageData.id) option.selected = true;
-            select.appendChild(option);
-        });
-
-        // Handle Dropdown Change
-        select.addEventListener('change', (e) => {
-            window.location.search = `?id=${e.target.value}`;
-        });
-
-        // Handle Next/Prev Buttons
-        btnPrev.onclick = () => {
-            if(currentIndex > 0) {
-                window.location.search = `?id=${projectPages[currentIndex - 1].id}`;
-            }
-        };
-        btnNext.onclick = () => {
-            if(currentIndex < projectPages.length - 1) {
-                window.location.search = `?id=${projectPages[currentIndex + 1].id}`;
-            }
-        };
-
-        // Disable buttons if at start/end
-        if(currentIndex === 0) btnPrev.disabled = true;
-        if(currentIndex === projectPages.length - 1) btnNext.disabled = true;
-
-        // 4. Load the Image
-        const imgElement = document.getElementById('main-image');
-        const metaImg = document.getElementById('meta-img');
-        
-        // Assumes images are in an 'images' folder
-        imgElement.src = `images/${pageData.image}`; 
-        metaImg.textContent = pageData.image;
-
-        // 5. Load and Parse the XML
-        const metaXml = document.getElementById('meta-xml');
-        const textBox = document.getElementById('transcription-text');
-        
-        metaXml.textContent = pageData.xml;
-
-        // Assumes xmls are in an 'xml' folder
-        fetch(`xml/${pageData.xml}`)
-            .then(response => response.text())
-            .then(str => {
-                // Parse the XML
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(str, "text/xml");
-                
-                // Your XML puts content inside <text> <![CDATA[ ... ]]> </text>
-                // DOMParser handles CDATA automatically in most cases
-                const textContent = xmlDoc.getElementsByTagName("text")[0].textContent.trim();
-                
-                // Insert into HTML
-                // Note: We use innerHTML because the XML contains HTML tags like <br> and <p>
-                textBox.innerHTML = textContent;
-            })
-            .catch(err => {
-                console.error("Error loading XML:", err);
-                textBox.innerHTML = "<p style='color:red'>Error loading transcription file.</p>";
-            });
-
-        // 6. Zoom Feature
-        imgElement.addEventListener('click', function() {
-            this.classList.toggle('is-zoomed');
-        });
+    // Populate Dropdown
+    projectPages.forEach(page => {
+        const option = document.createElement('option');
+        option.value = page.id;
+        option.textContent = page.title;
+        if(page.id === pageData.id) option.selected = true;
+        select.appendChild(option);
     });
-    </script>
+
+    // --- NAVIGATION LOGIC (CRITICAL FIX) ---
+    // We must include "project=${currentProjectId}" in the links, 
+    // otherwise it kicks you back to the default book.
+
+    // Handle Dropdown Change
+    select.addEventListener('change', (e) => {
+        window.location.search = `?project=${currentProjectId}&id=${e.target.value}`;
+    });
+
+    // Handle Prev Button
+    btnPrev.onclick = () => {
+        if(currentIndex > 0) {
+            const prevId = projectPages[currentIndex - 1].id;
+            window.location.search = `?project=${currentProjectId}&id=${prevId}`;
+        }
+    };
+
+    // Handle Next Button
+    btnNext.onclick = () => {
+        if(currentIndex < projectPages.length - 1) {
+            const nextId = projectPages[currentIndex + 1].id;
+            window.location.search = `?project=${currentProjectId}&id=${nextId}`;
+        }
+    };
+
+    // Disable buttons if at start/end
+    if(currentIndex === 0) btnPrev.disabled = true;
+    if(currentIndex === projectPages.length - 1) btnNext.disabled = true;
+
+    // 5. LOAD THE IMAGE
+    const imgElement = document.getElementById('main-image');
+    const metaImg = document.getElementById('meta-img');
+    
+    imgElement.src = `images/${pageData.image}`; 
+    metaImg.textContent = pageData.image;
+
+    // 6. LOAD AND PARSE XML
+    const metaXml = document.getElementById('meta-xml');
+    const textBox = document.getElementById('transcription-text');
+    
+    metaXml.textContent = pageData.xml;
+
+    fetch(`xml/${pageData.xml}`)
+        .then(response => {
+            if (!response.ok) throw new Error("HTTP error " + response.status);
+            return response.text();
+        })
+        .then(str => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(str, "text/xml");
+            
+            // Extract text from <text> tag
+            // Using checks to avoid crash if tag is missing
+            const textNode = xmlDoc.getElementsByTagName("text")[0];
+            if (textNode) {
+                textBox.innerHTML = textNode.textContent.trim();
+            } else {
+                textBox.innerHTML = "<em>No text content found in XML.</em>";
+            }
+        })
+        .catch(err => {
+            console.error("Error loading XML:", err);
+            textBox.innerHTML = `<p style='color:red'>Error loading transcription file (${pageData.xml}).<br>Check if file exists in xml/ folder.</p>`;
+        });
+
+    // 7. ZOOM FEATURE
+    imgElement.addEventListener('click', function() {
+        this.classList.toggle('is-zoomed');
+    });
+});
+</script>
 </body>
 </html>
