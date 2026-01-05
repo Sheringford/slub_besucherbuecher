@@ -17,20 +17,15 @@
         <p>Auf dieser Seite präsentieren wir die transkribierten historischen Besucherbücher der sächsischen kurfürstlichen Bibliothek.</p>
 
         <div class="project-card">
-            <h3>Nomina Illustrium Qui Bibliothecam Regio-Electoralem Dresdensem inviserunt (1753-1813)</h3>
-            <p>Das Besucherbuch aus dem späten 18. und frühen 19. Jahrhundert</p>
-            
-            <p><strong>Transkribierte Seiten:</strong> <span id="page-count">Laden...</span></p>
-            
-            <a href="viewer.html">Transkription öffnen &rarr;</a>
+            <h3>Nomina Illustrium...</h3>
+            <p><strong>Transkribierte Seiten:</strong> <span id="count-nomina">Laden...</span></p>
+            <a href="viewer.html?project=nomina">Transkription öffnen &rarr;</a>
         </div>
-
+        
         <div class="project-card">
             <h3>Das Jahr 1776</h3>
-            <p>Vor 250 Jahren</p>
-            <p><strong>Transkribierte Seiten:</strong> <span id="page-count">Laden...</span></p>
-            
-            <a href="viewer.html">Transkription öffnen &rarr;</a>
+            <p><strong>Transkribierte Seiten:</strong> <span id="count-year1776">Laden...</span></p>
+            <a href="viewer.html?project=year1776">Transkription öffnen &rarr;</a>
         </div>
     </div>
 
@@ -38,11 +33,17 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Check if projectPages exists (from config.js)
-            if (typeof projectPages !== 'undefined') {
-                const countElement = document.getElementById('page-count');
-                if (countElement) {
-                    countElement.textContent = projectPages.length;
+            if (typeof projects !== 'undefined') {
+                // Update Nomina Count
+                const countNomina = document.getElementById('count-nomina');
+                if (countNomina && projects.nomina) {
+                    countNomina.textContent = projects.nomina.length;
+                }
+    
+                // Update 1776 Count
+                const count1776 = document.getElementById('count-year1776');
+                if (count1776 && projects.year1776) {
+                    count1776.textContent = projects.year1776.length;
                 }
             }
         });
