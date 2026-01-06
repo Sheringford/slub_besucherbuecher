@@ -27,6 +27,12 @@
             <p><strong>Transkribierte Seiten:</strong> <span id="count-year1776">Laden...</span></p>
             <a href="viewer.html?project=year1776">Transkription öffnen &rarr;</a>
         </div>
+
+        <div class="project-card">
+            <h3>Das Jahr 1826</h3>
+            <p><strong>Transkribierte Seiten:</strong> <span id="count-year1776">Laden...</span></p>
+            <a href="viewer.html?project=year1826">Transkription öffnen &rarr;</a>
+        </div>
     </div>
 
     <script src="config.js"></script>
@@ -44,6 +50,11 @@
                 const count1776 = document.getElementById('count-year1776');
                 if (count1776 && projects.year1776) {
                     count1776.textContent = projects.year1776.length;
+
+                // Update 1826 Count
+                const count1826 = document.getElementById('count-year1826');
+                if (count1826 && projects.year1826) {
+                    count1826.textContent = projects.year1826.length;
                 }
             }
         });
