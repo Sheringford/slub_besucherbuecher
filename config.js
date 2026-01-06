@@ -93,5 +93,73 @@ const projects = {
             image: "0057.jpg", 
             xml: "transcription_0057.xml"
         },
+    ],
+    "year1826": [
+        {
+            id: "p1813_1",
+            title: "Seite 1",
+            image: "1813_0171.jpg", 
+            xml: "transcription_1813_0171.xml"
+        },
+        {
+            id: "p1813_2",
+            title: "Seite 2",
+            image: "1813_0172.jpg", 
+            xml: "transcription_1813_0172.xml"
+        },
+        {
+            id: "p1813_3",
+            title: "Seite 3",
+            image: "1813_0173.jpg", 
+            xml: "transcription_1813_0173.xml"
+        },
+        {
+            id: "p1813_4",
+            title: "Seite 4",
+            image: "1813_0174.jpg", 
+            xml: "transcription_1813_0174.xml"
+        },
+        {
+            id: "p1813_1",
+            title: "Seite 5",
+            image: "1813_0175.jpg", 
+            xml: "transcription_1813_0175.xml"
+        },
+        {
+            id: "p1813_6",
+            title: "Seite 6",
+            image: "1813_0176.jpg", 
+            xml: "transcription_1813_0176.xml"
+        },
+        {
+            id: "p1813_7",
+            title: "Seite 7",
+            image: "1813_0177.jpg", 
+            xml: "transcription_1813_0177.xml"
+        },
+        {
+            id: "p1813_8",
+            title: "Seite 8",
+            image: "1813_0178.jpg", 
+            xml: "transcription_1813_0178.xml"
+        },
+        {
+            id: "p1813_9",
+            title: "Seite 9",
+            image: "1813_0179.jpg", 
+            xml: "transcription_1813_0179.xml"
+        },
+        {
+            id: "p1813_10",
+            title: "Seite 10",
+            image: "1813_0180.jpg", 
+            xml: "transcription_1813_0180.xml"
+        },
+        {
+            id: "p1813_11",
+            title: "Seite 11",
+            image: "1813_0181.jpg", 
+            xml: "transcription_1813_0181.xml"
+        },
     ]
 };
